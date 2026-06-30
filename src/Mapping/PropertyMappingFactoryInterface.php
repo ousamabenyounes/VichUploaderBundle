@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Vich\UploaderBundle\Mapping;
 
 interface PropertyMappingFactoryInterface

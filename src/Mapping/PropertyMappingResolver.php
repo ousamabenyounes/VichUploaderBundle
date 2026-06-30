@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Vich\UploaderBundle\Mapping;
 
 use Vich\UploaderBundle\Exception\MappingNotFoundException;
@@ -16,17 +14,17 @@ use Vich\UploaderBundle\Util\ClassUtils;
  *
  * @internal
  */
-final class PropertyMappingResolver implements PropertyMappingResolverInterface
+final readonly class PropertyMappingResolver implements PropertyMappingResolverInterface
 {
     /**
      * @param iterable<string, NamerInterface>          $namers
      * @param iterable<string, DirectoryNamerInterface> $dirNamers
      */
     public function __construct(
-        private readonly iterable $namers,
-        private readonly iterable $dirNamers,
-        private readonly array $mappings,
-        private readonly ?string $defaultFilenameAttributeSuffix = '_name'
+        private iterable $namers,
+        private iterable $dirNamers,
+        private array $mappings,
+        private ?string $defaultFilenameAttributeSuffix = '_name'
     ) {
     }
 
