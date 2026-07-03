@@ -19,4 +19,4 @@ You can also check [supported versions of PHP](//php.net/supported-versions.php)
 ## That was it!
 
 Check out the docs for information on how to use the bundle! [Return to the
-index.](/docs/index.md)
+index.](index.md)
