@@ -13,6 +13,8 @@ use Vich\UploaderBundle\Mapping\PropertyMapping;
  */
 final class FileSystemStorage extends AbstractStorage
 {
+    private const URI_SEPARATOR = '/';
+
     protected function doUpload(PropertyMapping $mapping, File $file, ?string $dir, string $name): ?File
     {
         $uploadDir = $mapping->getUploadDestination().\DIRECTORY_SEPARATOR.$dir;
@@ -69,10 +71,10 @@ final class FileSystemStorage extends AbstractStorage
             return null;
         }
 
-        $uploadDir = $this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj));
-        $uploadDir = ('' !== $uploadDir) ? $uploadDir.'/' : '';
+        $uploadDir = \trim($this->convertWindowsDirectorySeparator($mapping->getUploadDir($obj)), self::URI_SEPARATOR);
+        $uploadDir = ('' !== $uploadDir) ? $uploadDir.self::URI_SEPARATOR : '';
 
-        return \sprintf('%s/%s', $mapping->getUriPrefix(), $uploadDir.$name);
+        return \rtrim($mapping->getUriPrefix(), self::URI_SEPARATOR).self::URI_SEPARATOR.$uploadDir.$name;
     }
 
     private function convertWindowsDirectorySeparator(string $string): string
