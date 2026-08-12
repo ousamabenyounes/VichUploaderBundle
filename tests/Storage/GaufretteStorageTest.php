@@ -3,7 +3,6 @@
 namespace Vich\UploaderBundle\Tests\Storage;
 
 use Gaufrette\Adapter;
-use Gaufrette\Adapter\MetadataSupporter;
 use Gaufrette\Exception\FileNotFound;
 use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
@@ -41,7 +40,7 @@ class GaufretteStorageTest extends StorageTestCase
     public function testRemoveSkipsNullFileNameProperty(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn(null);
 
@@ -60,17 +59,17 @@ class GaufretteStorageTest extends StorageTestCase
             ->willReturn($filesystemKey);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn($uploadDir);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -84,17 +83,17 @@ class GaufretteStorageTest extends StorageTestCase
     public function testResolveUri(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUriPrefix')
             ->willReturn('/uploads');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -108,12 +107,12 @@ class GaufretteStorageTest extends StorageTestCase
     public function testResolveUriFileNull(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -127,22 +126,22 @@ class GaufretteStorageTest extends StorageTestCase
     public function testResolveUriWithZeroDirectory(): void
     {
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUriPrefix')
             ->willReturn('/uploads');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn('0');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $this->factory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fromField')
             ->with($this->object, 'file_field')
             ->willReturn($this->mapping);
@@ -176,20 +175,20 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $filesystem = $this->getFilesystemMock();
         $filesystem
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('delete')
             ->with('file.txt')
             ->willReturn(true);
 
         $this
             ->filesystemMap
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with('filesystemKey')
             ->willReturn($filesystem);
@@ -208,20 +207,20 @@ class GaufretteStorageTest extends StorageTestCase
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFileName')
             ->willReturn('file.txt');
 
         $filesystem = $this->getFilesystemMock();
         $filesystem
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('delete')
             ->with('file.txt')
             ->will($this->throwException(new FileNotFound('File Not Found')));
 
         $this
             ->filesystemMap
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with('filesystemKey')
             ->willReturn($filesystem);
@@ -233,50 +232,46 @@ class GaufretteStorageTest extends StorageTestCase
     {
         $filesystem = $this->getFilesystemMock();
         $file = $this->getUploadedFileMock();
-        $adapter = $this->createMock(MetadataSupporter::class);
+        $adapter = $this->createMock(Adapter::class);
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getClientOriginalName')
             ->willReturn('filename');
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getPathname')
             ->willReturn($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->willReturn($file);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadName')
             ->with($this->object)
             ->willReturn('filename');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
 
         $this->filesystemMap
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with('filesystemKey')
             ->willReturn($filesystem);
-
-        $adapter
-            ->expects(self::once())
-            ->method('setMetadata');
 
         $filesystem
             ->method('getAdapter')
             ->willReturn($adapter);
 
         $filesystem
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('write')
             ->with('filename', 'some content');
 
@@ -290,38 +285,38 @@ class GaufretteStorageTest extends StorageTestCase
         $file = $this->getUploadedFileMock();
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getClientOriginalName')
             ->willReturn('filename');
 
         $file
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getPathname')
             ->willReturn($this->getValidUploadDir().\DIRECTORY_SEPARATOR.'test.txt');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getFile')
             ->willReturn($file);
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadName')
             ->with($this->object)
             ->willReturn('filename');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDir')
             ->willReturn('');
 
         $this->mapping
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUploadDestination')
             ->willReturn('filesystemKey');
 
         $this->filesystemMap
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with('filesystemKey')
             ->willReturn($filesystem);
@@ -331,7 +326,7 @@ class GaufretteStorageTest extends StorageTestCase
             ->willReturn($adapter);
 
         $filesystem
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('write')
             ->with('filename', 'some content');
 

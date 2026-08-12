@@ -36,7 +36,7 @@
         "doctrine/doctrine-bundle": "^2.7 || ^3.0",
         "doctrine/mongodb-odm": "^2.4",
         "doctrine/orm": "^2.13 || ^3.0",
-        "knplabs/knp-gaufrette-bundle": "dev-master",
+        "knplabs/knp-gaufrette-bundle": "^1.0",
         "league/flysystem-bundle": "^2.4 || ^3.0",
         "league/flysystem-memory": "^2.0 || ^3.0",
         "matthiasnoback/symfony-dependency-injection-test": "^5.1 || ^6.0",
