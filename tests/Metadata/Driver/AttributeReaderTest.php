@@ -102,6 +102,17 @@ final class AttributeReaderTest extends TestCase
         );
     }
 
+    public function testDoesNotInstantiateUnrelatedAttributes(): void
+    {
+        $reader = new AttributeReader();
+        $class = new \ReflectionClass(EntityWithUnrelatedAttribute::class);
+
+        $this->assertEquals(
+            [AttributeUploadable::class => new AttributeUploadable()],
+            $reader->getClassAttributes($class)
+        );
+    }
+
     /**
      * Test new Attribute namespace methods work correctly.
      */
@@ -155,5 +166,20 @@ final class AttributeReaderTest extends TestCase
             new UploadableField('dummy_file', 'fileName'),
             $reader->getPropertyAttribute($property, UploadableField::class)
         );
+    }
+}
+
+#[AttributeUploadable]
+#[UnrelatedAttribute]
+final class EntityWithUnrelatedAttribute
+{
+}
+
+#[\Attribute]
+final class UnrelatedAttribute
+{
+    public function __construct()
+    {
+        throw new \LogicException();
     }
 }
